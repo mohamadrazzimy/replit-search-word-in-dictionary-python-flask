@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Word Search</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+</head>
+<body>
+  <input type="text" id="search-input" placeholder="Type a word">
+  <div id="result"></div>
+
+  <script>
+    var wordList = [];
+
+    // Load the word list data
+    axios.get('/get_wordlist')
+      .then(function (response) {
+        wordList = response.data;
+        console.log(wordList);
+
+        // Attach an event listener to the input field after the word list is loaded
+        document.getElementById('search-input').addEventListener('input', function() {
+          var searchTerm = this.value;
+
+          // Check if the search term is in the word list
+          var isFound = wordList.includes(searchTerm);
+
+          // Display the result
+          document.getElementById('result').textContent = isFound ? 'Word found in the dictionary!' : 'Word not found in the dictionary.';
+        });
+      })
+      .catch(function (error) {
+        console.error('Error:', error);
+      });
+  </script>
+</body>
+</html>
